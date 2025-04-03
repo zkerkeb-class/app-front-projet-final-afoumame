@@ -28,12 +28,12 @@ export default function Home() {
   ];
   
   const forYou = [
-    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "dansedescanards.mp3" },
-    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "dansedescanards.mp3" },
-    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "dansedescanards.mp3" },
-    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "dansedescanards.mp3" },
-    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "dansedescanards.mp3" },
-    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "dansedescanards.mp3" },
+    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "/media/dansedescanards.mp3", duration: "2:33" },
+    { title: "Ma Meilleure Ennemie", artist: "Stromae, Pomme", cover: "/cover/mameilleureennemie.png", music: "/media/mameilleureennemie.mp3", duration: "2:48" },
+    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "/media/dansedescanards.mp3", duration: "2:33" },
+    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "/media/dansedescanards.mp3", duration: "2:33" },
+    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "/media/dansedescanards.mp3", duration: "2:33" },
+    { title: "La Danse des Canards", artist: "Canard", cover: "/cover/dansedescanards.jpg", music: "/media/dansedescanards.mp3", duration: "2:33" },
   ];
 
   const recentlyPlayed = [
@@ -45,6 +45,10 @@ export default function Home() {
     { title: "Dance Monkey", artist: "Tones and I", cover: "/api/placeholder/150/150" }
   ];
   
+  const test = () => {
+    console.log("ok");
+  }
+
   const togglePlayPause = () => {
     if (isPlaying) {
       audioRef.current?.audioEl.current?.pause();
@@ -52,6 +56,17 @@ export default function Home() {
       audioRef.current?.audioEl.current?.play();
     }
     setIsPlaying(!isPlaying);
+  };
+  
+  // Function to change the current song
+  const changeSong = (song) => {
+    setCurrentSong(song);
+    setCurrentTime(0);
+    setIsPlaying(true);
+    // Play the song after changing it
+    setTimeout(() => {
+      audioRef.current?.audioEl.current?.play();
+    }, 100); 
   };
   
   // Update current time during playback
@@ -162,23 +177,23 @@ export default function Home() {
         
         {/* Content */}
         <div className="flex-1 p-6 overflow-y-auto bg-gradient-to-b from-gray-800 to-black">
-          <h2 className="text-2xl font-bold mb-6">Écoutés récemment</h2>
-          <div className="grid grid-cols-3 gap-4">
-            {recentlyPlayed.map((song, index) => (
-              <div key={index} className="bg-gray-800 p-4 rounded hover:bg-gray-700 cursor-pointer">
-                <img src={song.cover} alt={song.title} className="w-full mb-2" />
-                <h3 className="font-bold">{song.title}</h3>
-                <p className="text-gray-400">{song.artist}</p>
-              </div>
-            ))}
-          </div>
-          
           <h2 className="text-2xl font-bold mt-8 mb-6">Fait pour vous</h2>
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-8 gap-4">
             {forYou.map((song, index) => (
-              <div key={index} className="bg-gray-800 p-4 rounded hover:bg-gray-700 cursor-pointer">
-                <img src={song.cover} alt={`Cover ${song.title}`} className="w-full mb-2" />
-                <h3 className="font-bold">{song.title}</h3>
+              <div 
+                key={index} 
+                className="bg-gray-800 p-4 rounded hover:bg-gray-700 cursor-pointer" 
+                onClick={() => changeSong(song)}
+              >
+                <div className="relative pb-square aspect-square">
+                  <img 
+                    src={song.cover} 
+                    alt={`Cover ${song.title}`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="font-bold mt-2 line-clamp-1">{song.title}</h3>
+                <p className="text-gray-400 text-sm line-clamp-1">{song.artist}</p>
               </div>
             ))}
           </div>
@@ -189,7 +204,9 @@ export default function Home() {
       <div className="h-24 bg-gray-900 flex items-center px-4 border-t border-gray-800">
         {/* Song info */}
         <div className="flex items-center w-1/4">
-          <img src={currentSong.cover} alt={currentSong.title} className="h-14 w-14 mr-4" />
+          <div className="h-14 w-14 relative mr-4">
+            <img src={currentSong.cover} alt={currentSong.title} className="h-full w-full object-cover" />
+          </div>
           <div>
             <h4 className="font-bold">{currentSong.title}</h4>
             <p className="text-gray-400 text-sm">{currentSong.artist}</p>

@@ -194,7 +194,20 @@ body {
   height: 4px;
   border-radius: 2px;
 }
+.pb-square {
+  padding-bottom: 100%;
+}
 
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .progress-bar {
   height: 100%;
   background-color: #1DB954;
